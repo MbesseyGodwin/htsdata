@@ -11,6 +11,7 @@ import UpdateUser from './src/pages/UpdateUser';
 import ViewUser from './src/pages/ViewUser';
 import ViewAllUser from './src/pages/ViewAllUser';
 import DeleteUser from './src/pages/DeleteUser';
+import ExportData from './src/pages/ExportData';
 
 const Stack = createStackNavigator();
 
@@ -95,6 +96,22 @@ const App = () => {
             title: 'Delete Record',
             headerStyle: {
               backgroundColor: '#D1503A',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }}
+        />
+
+        {/* export data */}
+        <Stack.Screen
+          name="ExportData"
+          component={ExportData}
+          options={{
+            title: 'Export Data',
+            headerStyle: {
+              backgroundColor: '#0ece61',
             },
             headerTintColor: '#fff',
             headerTitleStyle: {

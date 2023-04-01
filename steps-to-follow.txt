@@ -1,0 +1,22 @@
+1. use the unique id of a video from youtube to add new videos to the database
+2. create a form for uploading those unique id and name to the database
+3. create a subscribe button
+4. create a user registration form and login authentication
+
+
+
+// for pushing the frontend code to github
+git remote -v
+git init
+git add -A
+git commit -m 'worked on global properties'
+git remote add origin git@https://github.com/MbesseyGodwin/nmrs-support.git
+git push -u -f origin main
+
+// for pushing the backend code to github
+git remote -v
+git init
+git add -A
+git commit -m "write a commit message"
+git remote add origin https://github.com/MbesseyGodwin/nmrs-support-backend.git
+git push -u -f origin main

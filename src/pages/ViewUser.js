@@ -20,7 +20,7 @@ const ViewUser = () => {
     setUserData({});
     db.transaction((tx) => {
       tx.executeSql(
-        'SELECT * FROM table_user where user_id = ?',
+        'SELECT * FROM htsData where hts_id = ?',
         [inputUserId],
         (tx, results) => {
           var len = results.rows.length;
@@ -28,7 +28,7 @@ const ViewUser = () => {
           if (len > 0) {
             setUserData(results.rows.item(0));
           } else {
-            alert(`User ID "${inputUserId}" Not Found`);
+            alert(`HTS ID "${inputUserId}" Not Found`);
           }
         }
       );
@@ -45,17 +45,17 @@ const ViewUser = () => {
     <SafeAreaView style={{ flex: 1 }}>
       <View style={{ flex: 1, backgroundColor: 'white' }}>
         <View style={{ flex: 1 }}>
-          <Mytext text="Filter By User ID" />
+          <Mytext text="Filter By HTS ID" />
           <Mytextinput
             value={inputUserId}
-            placeholder="Enter a User ID"
+            placeholder="Enter a HTS ID"
             onChangeText={
               (inputUserId) => setInputUserId(inputUserId)
             }
             style={{ padding: 10 }}
             keyboardType="numeric"
           />
-          <Mybutton title="Search User" customClick={searchUser} />
+          <Mybutton title="Search Record" customClick={searchUser} />
           {/* pay attention to this refresh button, use flex to group the buttons */}
           {/* <Button style={styles.button} title="Refresh" onPress={refreshData} /> */}
           <View
@@ -64,10 +64,16 @@ const ViewUser = () => {
               marginRight: 35,
               marginTop: 10
             }}>
-            <Text>User ID : {userData.user_id}</Text>
-            <Text>Name : {userData.user_name}</Text>
-            <Text>Contact : {userData.user_contact}</Text>
-            <Text>Address : {userData.user_address}</Text>
+            <Text>HTS ID : {userData.hts_id}</Text>
+            <Text>Test Date : {userData.test_date}</Text>
+            <Text>Client Code : {userData.client_code}</Text>
+            <Text>Age : {userData.age}</Text>
+            <Text>Gender : {userData.gender}</Text>
+            <Text>Address1 : {userData.address1}</Text>
+            <Text>Address2 : {userData.address2}</Text>
+            <Text>Contact : {userData.contact}</Text>
+            <Text>First Name : {userData.firstname}</Text>
+            <Text>Last Name : {userData.lastname}</Text>
           </View>
         </View>
       </View>

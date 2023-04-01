@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FlatList, Text, View, SafeAreaView, StyleSheet } from 'react-native';
 import { DatabaseConnection } from '../database/database-connection';
+import ExportCSV from './ExportCSV';
 
 const db = DatabaseConnection.getConnection();
 
@@ -11,7 +12,7 @@ const ViewAllUser = () => {
   useEffect(() => {
     db.transaction((tx) => {
       tx.executeSql(
-        'SELECT * FROM table_user',
+        'SELECT * FROM htsdata',
         [],
         (tx, results) => {
           var temp = [];
@@ -27,20 +28,24 @@ const ViewAllUser = () => {
   let listItemView = (item) => {
     return (
       <View
-        key={item.user_id}
+        key={item.hts_id}
         style={{ backgroundColor: '#32AEAA', marginTop: 10, padding: 30, borderRadius: 10 }}>
-        <Text style={styles.textheader}>User ID</Text>
-        <Text style={styles.textbottom}>{item.user_id}</Text>
+        <Text style={styles.textheader}>HTS ID</Text>
+        <Text style={styles.textbottom}>{item.hts_id}</Text>
 
-        <Text style={styles.textheader}>Name</Text>
-        <Text style={styles.textbottom}>{item.user_name}</Text>
 
-        <Text style={styles.textheader}>Contact</Text>
-        <Text style={styles.textbottom}>{item.user_contact}</Text>
+        <Text style={styles.textheader}>Client Code</Text>
+        <Text style={styles.textbottom}>{item.client_code}</Text>
 
-        <Text style={styles.textheader}>Address</Text>
-        <Text style={styles.textbottom}>{item.user_address}</Text>
-      </View>   
+        <Text style={styles.textheader}>Full Name</Text>
+        <Text style={styles.textbottom}>{`${item.firstname} ${item.lastname}`}</Text>
+
+        <Text style={styles.textheader}>Sex/Age</Text>
+        <Text style={styles.textbottom}>{`${item.gender} (${item.age} yrs)`}</Text>
+
+        <Text style={styles.textheader}>Address1</Text>
+        <Text style={styles.textbottom}>{item.address1}</Text>
+      </View>
     );
   };
 
@@ -48,7 +53,7 @@ const ViewAllUser = () => {
     <SafeAreaView style={{ flex: 1, marginBottom: 10, }}>
       <View style={{ flex: 1, backgroundColor: 'white' }}>
         <View style={{ flex: 1 }}>
-          <Text style={styles.countText}>Total records: {count}</Text>
+          <Text style={styles.countText}>Total Records: {count}</Text>
           <FlatList
             style={{ marginTop: 0 }}
             contentContainerStyle={{ paddingHorizontal: 20 }}
@@ -58,22 +63,27 @@ const ViewAllUser = () => {
           />
         </View>
       </View>
+      <ExportCSV />
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   textheader: {
-    color: '#fff',
-    fontSize: 12,
+    color: '#000',
+    fontSize: 10,
     fontWeight: '700',
+    textTransform: 'capitalize',
+    textDecorationLine: 'underline',
   },
   textbottom: {
     color: '#fff',
-    fontSize: 18,
+    fontSize: 13,
+    fontWeight: 'bold',
+    marginBottom: 10,
   },
   countText: {
-    fontSize: 18,
+    fontSize: 15,
     fontWeight: 'bold',
     textAlign: 'center',
     marginVertical: 10,

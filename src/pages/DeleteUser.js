@@ -16,7 +16,7 @@ const DeleteUser = ({ navigation }) => {
     }
     db.transaction((tx) => {
       tx.executeSql(
-        'DELETE FROM  table_user where user_id=?',
+        'DELETE FROM  htsdata where hts_id=?',
         [inputUserId],
         (tx, results) => {
           console.log('Results', results.rowsAffected);
@@ -27,7 +27,7 @@ const DeleteUser = ({ navigation }) => {
               [
                 {
                   text: 'Ok',
-                  onPress: () => navigation.navigate('HomeScreen'),
+                  onPress: () => navigation.navigate('Delete'),
                 },
               ],
               { cancelable: false }
@@ -47,14 +47,14 @@ const DeleteUser = ({ navigation }) => {
         <View style={{ flex: 1 }}>
           <Mytextinput
             value={inputUserId}
-            placeholder="Enter a User ID"
+            placeholder="Enter a HTS ID"
             onChangeText={
               (inputUserId) => setInputUserId(inputUserId)
             }
             style={{ padding: 10 }}
             keyboardType="numeric"
           />
-          <Mybutton title="Delete User" customClick={deleteUser} />
+          <Mybutton title="Delete Record" customClick={deleteUser} />
         </View>
       </View>
     </SafeAreaView>

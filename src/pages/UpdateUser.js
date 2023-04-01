@@ -16,64 +16,79 @@ import { DatabaseConnection } from '../database/database-connection';
 const db = DatabaseConnection.getConnection();
 
 const UpdateUser = ({ navigation }) => {
-  let [inputUserId, setInputUserId] = useState('');
-  let [userName, setUserName] = useState('');
-  let [userContact, setUserContact] = useState('');
-  let [userAddress, setUserAddress] = useState('');
+  let [inputHtsId, setInputHtsId] = useState('');
+  let [testDate, setTestDate] = useState('');
+  let [clientCode, setClientCode] = useState('');
+  let [age, setAge] = useState('');
+  let [gender, setGender] = useState('');
+  let [address1, setAddress1] = useState('');
+  let [address2, setAddress2] = useState('');
+  let [contact, setContact] = useState('');
+  let [firstName, setFirstName] = useState('');
+  let [lastName, setLastName] = useState('');
 
-  let updateAllStates = (name, contact, address) => {
-    setUserName(name);
-    setUserContact(contact);
-    setUserAddress(address);
+  let updateAllStates = (testDate, clientCode, age, gender, address1, address2, contact, firstName, lastName) => {
+    setTestDate(testDate);
+    setClientCode(clientCode);
+    setAge(age);
+    gender(gender);
+    setAddress1(address1);
+    setAddress2(address2);
+    setContact(contact);
+    setFirstName(firstName);
+    setLastName(lastName);
+
   };
 
   let searchUser = () => {
-    console.log(inputUserId);
+    console.log(inputHtsId);
     db.transaction((tx) => {
       tx.executeSql(
-        'SELECT * FROM table_user where user_id = ?',
-        [inputUserId],
+        'SELECT * FROM htsdata where hts_id = ?',
+        [inputHtsId],
         (tx, results) => {
           var len = results.rows.length;
           if (len > 0) {
             let res = results.rows.item(0);
             updateAllStates(
-              res.user_name,
-              res.user_contact,
-              res.user_address
+              res.test_date,
+              res.client_code,
+              res.age,
+              res.gender,
+              res.address1,
+              res.address2,
+              res.contact,
+              res.firstname,
+              res.lastname,
             );
           } else {
             alert('No User ID Found!');
-            updateAllStates('', '', '');
+            updateAllStates('', '', '', '', '', '', '', '', '');
           }
         }
       );
     });
   };
   let updateUser = () => {
-    console.log(inputUserId, userName, userContact, userAddress);
+    console.log(testDate, clientCode, age, gender, address1, address2, contact, firstName, lastName);
 
-    if (!inputUserId) {
+    if (!clientCode) {
       alert('enter ID');
       return;
     }
-    if (!userName) {
+    if (!firstName) {
       alert('enter name');
       return;
     }
-    if (!userContact) {
-      alert('enter contact');
-      return;
-    }
-    if (!userAddress) {
-      alert('enter address');
+    if (!lastName) {
+      alert('enter name');
       return;
     }
 
     db.transaction((tx) => {
       tx.executeSql(
-        'UPDATE table_user set user_name=?, user_contact=? , user_address=? where user_id=?',
-        [userName, userContact, userAddress, inputUserId],
+        'UPDATE htsdata set test_date=?, client_code=?, age=?, gender=?, address1=?, address2=?, contact=?, firstname=?, lastname=?',
+        [testDate, clientCode, age, gender, address1, address2, contact, firstName, lastName],
         (tx, results) => {
           console.log('Results', results.rowsAffected);
           if (results.rowsAffected > 0) {
@@ -83,7 +98,7 @@ const UpdateUser = ({ navigation }) => {
               [
                 {
                   text: 'Ok',
-                  onPress: () => navigation.navigate('HomeScreen'),
+                  onPress: () => navigation.navigate('Update'),
                 },
               ],
               { cancelable: false }
@@ -102,48 +117,108 @@ const UpdateUser = ({ navigation }) => {
             <KeyboardAvoidingView
               behavior="padding"
               style={{ flex: 1, justifyContent: 'space-between' }}>
-              <Mytext text="Filter By User ID" />
+              <Mytext text="Filter By HTS ID" />
               <Mytextinput
-                placeholder="Enter a User ID"
+                placeholder="Enter a HTS ID"
                 style={{ padding: 10 }}
                 keyboardType="numeric"
                 onChangeText={
-                  (inputUserId) => setInputUserId(inputUserId)
+                  (inputHtsId) => setInputHtsId(inputHtsId)
                 }
               />
               <Mybutton
-                title="Search User"
+                title="Search HTS"
                 customClick={searchUser}
               />
+
               <Mytextinput
-                placeholder="Username"
-                value={userName}
+                placeholder="test date"
+                value={testDate}
                 style={{ padding: 10 }}
                 onChangeText={
-                  (userName) => setUserName(userName)
+                  (testDate) => setTestDate(testDate)
                 }
               />
               <Mytextinput
-                placeholder="Contact"
-                value={'' + userContact}
+                placeholder="Client Code"
+                value={clientCode}
+                style={{ padding: 10 }}
                 onChangeText={
-                  (userContact) => setUserContact(userContact)
+                  (clientCode) => setClientCode(clientCode)
+                }
+              />
+
+              <Mytextinput
+                placeholder="Age"
+                value={age}
+                onChangeText={
+                  (age) => setAge(age)
                 }
                 maxLength={10}
                 style={{ padding: 10 }}
                 keyboardType="numeric"
               />
+
               <Mytextinput
-                value={userAddress}
-                placeholder="Address"
+                value={gender}
+                placeholder="gender"
                 onChangeText={
-                  (userAddress) => setUserAddress(userAddress)
+                  (gender) => setGender(gender)
+                }
+                style={{ padding: 10 }}
+              />
+
+              <Mytextinput
+                value={address1}
+                placeholder="Address 1"
+                onChangeText={
+                  (address1) => setAddress1(address1)
                 }
                 maxLength={225}
-                numberOfLines={5}
+                numberOfLines={3}
                 multiline={true}
                 style={{ textAlignVertical: 'top', padding: 10 }}
               />
+
+              <Mytextinput
+                value={address2}
+                placeholder="Address 2"
+                onChangeText={
+                  (address2) => setAddress2(address2)
+                }
+                maxLength={225}
+                numberOfLines={3}
+                multiline={true}
+                style={{ textAlignVertical: 'top', padding: 10 }}
+              />
+
+              <Mytextinput
+                value={contact}
+                placeholder="contact"
+                onChangeText={
+                  (contact) => setContact(contact)
+                }
+                style={{ padding: 10 }}
+              />
+
+              <Mytextinput
+                value={firstName}
+                placeholder="First Name"
+                onChangeText={
+                  (firstName) => setFirstName(firstName)
+                }
+                style={{ padding: 10 }}
+              />
+
+              <Mytextinput
+                value={lastName}
+                placeholder="Last Name"
+                onChangeText={
+                  (lastName) => setLastName(lastName)
+                }
+                style={{ padding: 10 }}
+              />
+
               <Mybutton
                 title="Update User"
                 customClick={updateUser}

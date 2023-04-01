@@ -16,7 +16,7 @@ const HomeScreen = ({ navigation }) => {
           if (res.rows.length == 0) {
             txn.executeSql('DROP TABLE IF EXISTS table_user', []);
             txn.executeSql(
-              'CREATE TABLE IF NOT EXISTS table_user(user_id INTEGER PRIMARY KEY AUTOINCREMENT, user_name VARCHAR(20), user_contact INT(10), user_address VARCHAR(255))',
+              'CREATE TABLE IF NOT EXISTS htsdata (hts_id INTEGER PRIMARY KEY AUTOINCREMENT, test_date VARCHAR(10), client_code VARCHAR(10), age INTEGER, gender VARCHAR(10), address1 VARCHAR(50), address2 VARCHAR(50), contact VARCHAR(20), firstname VARCHAR(20), lastname VARCHAR(20))',
               []
             );
           }
@@ -41,12 +41,12 @@ const HomeScreen = ({ navigation }) => {
             <MyImageButton
               title="Update"
               btnColor='#A45BB9'
-              btnIcon="user-circle"
+              btnIcon="edit"
               customClick={() => navigation.navigate('Update')}
             />
 
             <MyImageButton
-              title="View One"
+              title="Search"
               btnColor='#F9AD29'
               btnIcon="user"
               customClick={() => navigation.navigate('View')}
@@ -62,6 +62,13 @@ const HomeScreen = ({ navigation }) => {
               btnColor='#D1503A'
               btnIcon="user-times"
               customClick={() => navigation.navigate('Delete')}
+            />
+
+            <MyImageButton
+              title="Export"
+              btnColor='#0ece61'
+              btnIcon="car"
+              customClick={() => navigation.navigate('ExportData')}
             />
           </View>
         </View>

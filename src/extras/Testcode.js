@@ -32,6 +32,22 @@ const RegisterUser = ({ navigation }) => {
   const options = ["male", "female"];
 
   let register_user = () => {
+
+    db.transaction(tx => {
+      tx.executeSql(
+        "SELECT name FROM sqlite_master WHERE type='table';",
+        [],
+        (tx, results) => {
+          console.log("Tables in database:");
+          for (let i = 0; i < results.rows.length; i++) {
+            console.log(results.rows.item(i).name);
+          }
+        },
+        error => {
+          console.log("Error on retrieving tables: " + error.message);
+        },
+      );
+    });
     console.log(testDate, clientCode, age, gender, address1, address2, contact, firstName, lastName);
 
     if (!age) {
@@ -44,18 +60,6 @@ const RegisterUser = ({ navigation }) => {
     }
     if (!lastName) {
       alert('enter last name');
-      return;
-    }
-    if (!gender) {
-      alert('enter gender');
-      return;
-    }
-    if (!address1) {
-      alert('enter address1');
-      return;
-    }
-    if (!clientCode) {
-      alert('enter client Code');
       return;
     }
 
@@ -94,7 +98,7 @@ const RegisterUser = ({ navigation }) => {
 
               <Text style={styles.text}>Test Date</Text>
               <Mytextinput
-                value={date}
+                // value={date}
                 placeholder="Test Date"
                 onChangeText={
                   (testDate) => setTestDate(testDate)
@@ -109,7 +113,6 @@ const RegisterUser = ({ navigation }) => {
                   (clientCode) => setClientCode(clientCode)
                 }
                 style={{ padding: 10 }}
-                keyboardType="numeric"
               />
 
               <Text style={styles.text}>First Name</Text>
@@ -140,14 +143,24 @@ const RegisterUser = ({ navigation }) => {
                 keyboardType="numeric"
               />
 
-              <Text style={styles.text}>Gender</Text>
-              <Mytextinput
-                placeholder="Gender"
-                onChangeText={
-                  (gender) => setGender(gender)
-                }
-                style={{ padding: 10 }}
-              />
+              <View style={styles.container}>
+                <Text style={styles.label}>Gender:</Text>
+                <SelectDropdown
+                  style={styles.dropdown}
+                  data={options}
+                  onSelect={(selectedItem, index) => {
+                  }}
+                  onChangeText={
+                    (gender) => setGender(gender)
+                  }
+                  buttonTextAfterSelection={(selectedItem, index) => {
+                    return selectedItem;
+                  }}
+                  rowTextForSelection={(item, index) => {
+                    return item;
+                  }}
+                />
+              </View>
 
               <Text style={styles.text}>Address 1: </Text>
               <Mytextinput
