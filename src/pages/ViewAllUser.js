@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FlatList, Text, View, SafeAreaView, StyleSheet } from 'react-native';
+import { FlatList, Text, View, SafeAreaView, StyleSheet, Button } from 'react-native';
 import { DatabaseConnection } from '../database/database-connection';
 import ExportCSV from './ExportCSV';
 
@@ -8,6 +8,7 @@ const db = DatabaseConnection.getConnection();
 const ViewAllUser = () => {
   const [flatListItems, setFlatListItems] = useState([]);
   const [count, setCount] = useState(0);
+  const [data, setData] = useState();
 
   useEffect(() => {
     db.transaction((tx) => {
@@ -20,10 +21,14 @@ const ViewAllUser = () => {
             temp.push(results.rows.item(i));
           setFlatListItems(temp);
           setCount(results.rows.length); // set the count of records returned
+          // console.log(temp);
+          setData(temp)
         }
       );
     });
   }, []);
+  console.log('loging data');
+  console.log(data);
 
   let listItemView = (item) => {
     return (

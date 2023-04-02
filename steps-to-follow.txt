@@ -10,13 +10,5 @@ git remote -v
 git init
 git add -A
 git commit -m 'worked on global properties'
-git remote add origin git@https://github.com/MbesseyGodwin/nmrs-support.git
-git push -u -f origin main
-
-// for pushing the backend code to github
-git remote -v
-git init
-git add -A
-git commit -m "write a commit message"
-git remote add origin https://github.com/MbesseyGodwin/nmrs-support-backend.git
+git remote add origin git@https://github.com/MbesseyGodwin/htsdata.git
 git push -u -f origin main

@@ -1,49 +1,49 @@
 import React from 'react';
 import { Button } from 'react-native';
 import * as FileSystem from 'expo-file-system';
-import { DatabaseConnection } from '../database/database-connection';
-const getAllData = () => {
-    const db = DatabaseConnection.getConnection();
-    return new Promise((resolve, reject) => {
-        db.transaction((tx) => {
-            tx.executeSql(
-                'SELECT * FROM htsdata',
-                [],
-                (tx, results) => {
-                    var data = results.rows.raw(); // get the data as an array of objects
-                    resolve(data);
-                },
-                (error) => {
-                    reject(error);
-                }
-            );
-        });
-    });
-};
-const convertToCSV = (data) => {
-    const header = Object.keys(data[0]).join(',') + '\n'; // create the header row
-    const rows = data.map((item) => Object.values(item).join(',') + '\n'); // create the data rows
-    return header + rows.join('');
-};
-const ExportCSV = () => {
-    const handleExport = async () => {
-        try {
-            const data = await getAllData(); // retrieve all the data
-            const csv = convertToCSV(data); // convert the data to CSV format
-            const path = FileSystem.documentDirectory + 'htsdata.csv'; // specify the file path
-            await FileSystem.writeAsStringAsync(path, csv); // write the CSV string to the file
-            alert('CSV file exported successfully!');
-        } catch (error) {
-            console.error(error);
-            alert('Failed to export CSV file.');
-        }
-    };
 
-    return (
-        <Button
-            title="Export CSV"
-            onPress={handleExport}
-        />
-    );
+const data = [
+    {
+        "address1": "Umuahia ",
+        "address2": "Abuja",
+        "age": 21,
+        "client_code": "12345",
+        "contact": "09038337102",
+        "firstname": "Mbessey",
+        "gender": "Male ",
+        "hts_id": 1,
+        "lastname": "Godwin",
+        "test_date": "",
+    },
+    {
+        "address1": "Gboko",
+        "address2": "Makurdi",
+        "age": 31,
+        "client_code": "12121",
+        "contact": "0812211221",
+        "firstname": "Felix",
+        "gender": "Male",
+        "hts_id": 2,
+        "lastname": "Hom",
+        "test_date": "",
+    },
+];
+
+const exportData = async () => {
+    const csv = data.map(row => Object.values(row).join(',')).join('\n');
+    const pathToWrite = `${FileSystem.documentDirectory}/data.csv`;
+
+    try {
+        await FileSystem.writeAsStringAsync(pathToWrite, csv, { encoding: FileSystem.EncodingType.UTF8 });
+        console.log('File written successfully!');
+        console.log(pathToWrite);
+    } catch (error) {
+        console.log('Error writing file:', error);
+    }
 };
+
+const ExportCSV = () => {
+    return <Button title="Export" onPress={exportData} />;
+};
+
 export default ExportCSV;
